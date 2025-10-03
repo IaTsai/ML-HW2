@@ -11,16 +11,18 @@
 This assignment consists of three parts:
 
 1. **HW2-1: Naive Bayes Classifier**
+
    - Discrete Mode: Using 32 bins to count pixel frequencies
    - Continuous Mode: Modeling with Gaussian distribution
 
 2. **HW2-2: Online Learning**
+
    - Beta-Binomial Conjugation implementation
    - Online updating of coin flip probability
 
 3. **HW2-3: Mathematical Derivation**
    - Proof of Beta-Binomial Conjugation
-   - Proof of Gamma-Poisson Conjugation (NEW in 2025)
+   - Proof of Gamma-Poisson Conjugation
 
 ---
 
@@ -32,9 +34,7 @@ HW2_Dday1008/
 ├── 2-2_online_learning.py           # Online Learning
 ├── testfile.txt                     # Test data for Online Learning
 ├── MNIST_dataset.zip                # MNIST dataset (compressed)
-├── HW2_Report.md                    # Complete report (with proofs)
-├── main.tex                         # LaTeX report
-├── HW2_LaTeX_Final_313553058.zip    # For Overleaf upload
+├── requirements.txt                 # Python dependencies
 └── README.md                        # This file
 ```
 
@@ -52,11 +52,8 @@ HW2_Dday1008/
 This project only requires **NumPy**, no other special packages needed.
 
 ```bash
-# Using pip
-pip install numpy
-
-# Or using conda
-conda install numpy
+# Install all dependencies from requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Verify Environment
@@ -83,6 +80,7 @@ ls -lh *.idx*-ubyte_
 ```
 
 You should see 4 files:
+
 ```
 t10k-images.idx3-ubyte_   (7.5 MB)  - Test images
 t10k-labels.idx1-ubyte_   (9.8 KB)  - Test labels
@@ -102,6 +100,7 @@ If you don't have the compressed file, download from:
    - `t10k-labels-idx1-ubyte.gz`
 
 After downloading, extract and rename (add underscore `_`):
+
 ```bash
 gunzip train-images-idx3-ubyte.gz
 mv train-images-idx3-ubyte train-images.idx3-ubyte_
@@ -125,6 +124,7 @@ Generate Discrete(0) or Continuous(1): 0  # Enter 0 or 1
 ```
 
 **Description**:
+
 - Enter `0`: Train Discrete Mode (~2-3 minutes)
 - Enter `1`: Train Continuous Mode (~3-4 minutes)
 - Training results will be saved to `Discrete` or `Continuous` file
@@ -140,6 +140,7 @@ Discrete(0) or continuous(1): 0  # Enter 0 or 1
 ```
 
 **Description**:
+
 - Directly loads saved training results
 - Displays prediction results for all test images
 - Shows "Imagination" visualization for digits 0-9
@@ -187,6 +188,7 @@ input b: 0   # Enter b parameter
 #### Test Cases
 
 **Case 1: Uniform Prior (No prior knowledge)**
+
 ```bash
 python 2-2_online_learning.py testfile.txt
 input a: 0
@@ -194,6 +196,7 @@ input b: 0
 ```
 
 **Case 2: Informative Prior (With prior knowledge)**
+
 ```bash
 python 2-2_online_learning.py testfile.txt
 input a: 10
@@ -222,10 +225,10 @@ Beta posterior: a = 15  b = 14
 
 ### Naive Bayes Classifier
 
-| Mode | Training Time | Error Rate |
-|------|--------------|------------|
-| Discrete | ~2-3 minutes | ~15-16% |
-| Continuous | ~3-4 minutes | ~15-17% |
+| Mode       | Training Time | Error Rate |
+| ---------- | ------------- | ---------- |
+| Discrete   | ~2-3 minutes  | ~15-16%    |
+| Continuous | ~3-4 minutes  | ~15-17%    |
 
 **Test Environment**: 60,000 training images, 10,000 test images
 
@@ -241,6 +244,7 @@ Beta posterior: a = 15  b = 14
 For complete mathematical proofs, please refer to:
 
 1. **Markdown Version**: `HW2_Report.md`
+
    - Contains detailed code explanations
    - Includes both conjugate prior proofs
 
@@ -262,11 +266,13 @@ For complete mathematical proofs, please refer to:
 ### Q1: MNIST Data Files Not Found
 
 **Error Message**:
+
 ```
 FileNotFoundError: [Errno 2] No such file or directory: './train-images.idx3-ubyte_'
 ```
 
 **Solution**:
+
 ```bash
 # Check if files exist
 ls *.idx*-ubyte_
@@ -278,11 +284,13 @@ unzip MNIST_dataset.zip
 ### Q2: NumPy Not Installed
 
 **Error Message**:
+
 ```
 ModuleNotFoundError: No module named 'numpy'
 ```
 
 **Solution**:
+
 ```bash
 pip install numpy
 ```
@@ -290,12 +298,14 @@ pip install numpy
 ### Q3: Python Version Too Old
 
 **Error Message**:
+
 ```
 SyntaxError: invalid syntax
 ```
 
 **Solution**:
 Ensure Python version ≥ 3.6
+
 ```bash
 python --version
 # Or try
@@ -305,6 +315,7 @@ python3 --version
 ### Q4: Training Result Files Already Exist
 
 To retrain, delete old result files:
+
 ```bash
 rm Discrete Continuous
 python 2-1_naive_bayes_classifier.py --train
@@ -313,6 +324,7 @@ python 2-1_naive_bayes_classifier.py --train
 ### Q5: Out of Memory
 
 Continuous Mode may use more memory (~1-2 GB). If memory is insufficient:
+
 - Close other applications
 - Or only run Discrete Mode
 
@@ -323,12 +335,14 @@ Continuous Mode may use more memory (~1-2 GB). If memory is insufficient:
 ### 2-1_naive_bayes_classifier.py
 
 **Main Functions**:
+
 - `LoadImage()` / `LoadLabel()`: Load MNIST binary data
 - `DiscreteMode()`: Discrete Naive Bayes implementation
 - `ContinuousMode()`: Continuous Naive Bayes implementation
 - `DrawImagination()`: Visualize digit features
 
 **Core Algorithm**:
+
 ```python
 # Discrete Mode
 prob[j] += log(prior[j] / train_size)
@@ -342,11 +356,13 @@ prob[j] += likelihood
 ### 2-2_online_learning.py
 
 **Main Functions**:
+
 - `Factorial()`: Factorial calculation
 - `C()`: Combination calculation
 - Beta-Binomial Conjugation update
 
 **Core Algorithm**:
+
 ```python
 # Posterior update
 a' = a + m  # m = number of successes
@@ -358,9 +374,11 @@ b' = b + n  # n = number of failures
 ## References
 
 1. **MNIST Dataset**
+
    - http://yann.lecun.com/exdb/mnist/
 
 2. **Naive Bayes**
+
    - Pattern Recognition and Machine Learning (Bishop)
    - Chapter 4: Linear Models for Classification
 
